@@ -12,6 +12,7 @@ class TravellerCounter extends StatelessWidget {
 
   final TextStyle style;
   final int numTravellers;
+
   final VoidCallback onIncrement;
   final VoidCallback onDecrement;
 

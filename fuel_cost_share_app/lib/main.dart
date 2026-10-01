@@ -3,6 +3,7 @@ import 'package:fuel_cost_share_app/widgets/traveller_counter.dart';
 import 'package:fuel_cost_share_app/widgets/tip_slider.dart';
 import 'package:fuel_cost_share_app/widgets/enter_fuel_cost.dart';
 import 'package:fuel_cost_share_app/widgets/total_fuel_per_traveller.dart';
+import 'package:fuel_cost_share_app/widgets/tip_amount_display.dart';
 
 void main() {
   runApp(const MyApp());
@@ -26,6 +27,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
+// Main screen that holds the app state (fuel cost, travellers, tip)
 class Fgift extends StatefulWidget {
   const new({super.key});
 
@@ -99,6 +101,7 @@ class _FgiftState extends State<Fgift> {
               toCalculate: calculateTotalFuelCost,
             ),
           ),
+          // total fuel cost input, travellers input and tip percentage slider
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Container(
@@ -112,7 +115,7 @@ class _FgiftState extends State<Fgift> {
                   children: [
                     // Fuel cost input
                     EnterFuelCost(onEntered: onChangedFuelCost),
-                    //Split Bill area
+                    // Split Bill area
                     TravellerCounter(
                       style: style,
                       numTravellers: numTravellers,
@@ -123,9 +126,11 @@ class _FgiftState extends State<Fgift> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text('Tip', style: theme.textTheme.titleMedium),
-                        Text(
-                          (fuelCost * _giftPercentage).toStringAsFixed(2),
-                          style: theme.textTheme.titleMedium,
+                        // Tip amount in money
+                        TipAmountDisplay(
+                          fuelCost: fuelCost,
+                          giftPercentage: _giftPercentage,
+                          theme: theme,
                         ),
                       ],
                     ),

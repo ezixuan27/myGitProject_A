@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fuel_cost_share_app/widgets/traveller_counter.dart';
 import 'package:fuel_cost_share_app/widgets/tip_slider.dart';
 import 'package:fuel_cost_share_app/widgets/enter_fuel_cost.dart';
-
-
+import 'package:fuel_cost_share_app/widgets/total_fuel_per_traveller.dart';
 
 void main() {
   runApp(const MyApp());
@@ -70,6 +69,11 @@ class _FgiftState extends State<Fgift> {
     });
   }
 
+  // Split fuel costs evenly between travellers
+  double calculateTotalFuelCost() {
+    return (fuelCost + fuelCost * _giftPercentage) / numTravellers;
+  }
+
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
@@ -82,23 +86,17 @@ class _FgiftState extends State<Fgift> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+          // Top orange section of the page
           Container(
             padding: const EdgeInsets.all(18.0),
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.inversePrimary,
               borderRadius: BorderRadius.circular(10),
             ),
-            child: Column(
-              children: [
-                Text('Total Fuel Cost Per Traveller', style: style),
-                Text(
-                  '£${((fuelCost + fuelCost * _giftPercentage) / numTravellers).toStringAsFixed(2)} ',
-                  style: style.copyWith(
-                    color: theme.colorScheme.onPrimary,
-                    fontSize: theme.textTheme.displaySmall?.fontSize,
-                  ),
-                ),
-              ],
+            child: TotalFuelPerTraveller(
+              style: style,
+              theme: theme,
+              toCalculate: calculateTotalFuelCost,
             ),
           ),
           Padding(
@@ -126,12 +124,12 @@ class _FgiftState extends State<Fgift> {
                       children: [
                         Text('Tip', style: theme.textTheme.titleMedium),
                         Text(
-                          '${fuelCost * _giftPercentage}',
+                          (fuelCost * _giftPercentage).toStringAsFixed(2),
                           style: theme.textTheme.titleMedium,
                         ),
                       ],
                     ),
-                    // tip percentage display
+                    // Tip percentage display
                     Text('${(_giftPercentage * 100).round()}%'),
                     // Tip Slider
                     TipSlider(

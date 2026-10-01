@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fuel_cost_share_app/widgets/traveller_counter.dart';
 import 'package:fuel_cost_share_app/widgets/tip_slider.dart';
+import 'package:fuel_cost_share_app/widgets/enter_fuel_cost.dart';
 
 
 
@@ -36,7 +37,7 @@ class Fgift extends StatefulWidget {
 class _FgiftState extends State<Fgift> {
   int numTravellers = 1; // never goes below 1
   double _giftPercentage = 0.0;
-  double fuelCost = 0.0;
+  double fuelCost = 0.0; // total fuel cost entered by the user
 
   //Methods
   // Add one traveller
@@ -59,6 +60,13 @@ class _FgiftState extends State<Fgift> {
   void onChanged(double value) {
     setState(() {
       _giftPercentage = value;
+    });
+  }
+
+  // Called by the fuel cost text field and invalid input counts as 0
+  void onChangedFuelCost(String value) {
+    setState(() {
+      fuelCost = double.tryParse(value) ?? 0.0;
     });
   }
 
@@ -104,18 +112,8 @@ class _FgiftState extends State<Fgift> {
                 padding: const EdgeInsets.all(18.0),
                 child: Column(
                   children: [
-                    TextField(
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Enter Fuel Cost',
-                      ),
-                      keyboardType: TextInputType.number,
-                      onChanged: (String value) {
-                        setState(() {
-                          fuelCost = double.tryParse(value) ?? 0.0;
-                        });
-                      },
-                    ),
+                    // Fuel cost input
+                    EnterFuelCost(onEntered: onChangedFuelCost),
                     //Split Bill area
                     TravellerCounter(
                       style: style,

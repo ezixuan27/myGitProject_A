@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+// Shows the final cost each traveller pays (fuel + tip, split evenly),
+// formatted as pounds with 2 decimals
 class FinalCostCalculation extends StatelessWidget {
   const new({
     super.key,
@@ -10,6 +12,8 @@ class FinalCostCalculation extends StatelessWidget {
 
   final TextStyle style;
   final ThemeData theme;
+
+  // Function from the parent that returns the cost per traveller
   final ValueGetter<double> toCalculate;
 
   @override

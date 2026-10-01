@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// "Split" row with - / + buttons to change how many travellers share the cost
 class TravellerCounter extends StatelessWidget {
   const new({
     super.key,
@@ -11,6 +12,7 @@ class TravellerCounter extends StatelessWidget {
 
   final TextStyle style;
   final int numTravellers;
+
   final VoidCallback onIncrement;
   final VoidCallback onDecrement;
 

@@ -4,6 +4,7 @@ import 'package:fuel_cost_share_app/widgets/tip_slider.dart';
 import 'package:fuel_cost_share_app/widgets/enter_fuel_cost.dart';
 import 'package:fuel_cost_share_app/widgets/total_fuel_per_traveller_title.dart';
 import 'package:fuel_cost_share_app/widgets/final_cost_calculation.dart';
+import 'package:fuel_cost_share_app/widgets/tip_amount_display.dart';
 
 void main() {
   runApp(const MyApp());
@@ -27,6 +28,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
+// Main screen that holds the app state (fuel cost, travellers, tip)
 class Fgift extends StatefulWidget {
   const new({super.key});
 
@@ -35,17 +37,19 @@ class Fgift extends StatefulWidget {
 }
 
 class _FgiftState extends State<Fgift> {
-  int numTravellers = 1;
-  double _giftPercentage = 0.0;
-  double fuelCost = 0.0;
+  int numTravellers = 1; // never goes below 1
+  double _giftPercentage = 0.0; 
+  double fuelCost = 0.0; // total fuel cost entered by the user
 
   //Methods
+  // Add one traveller
   void increment() {
     setState(() {
       numTravellers = numTravellers + 1;
     });
   }
 
+  // Remove one traveller, but keep at least 1
   void decrement() {
     setState(() {
       if (numTravellers > 1) {
@@ -54,18 +58,21 @@ class _FgiftState extends State<Fgift> {
     });
   }
 
+  // Called by the tip slider
   void onChanged(double value) {
     setState(() {
       _giftPercentage = value;
     });
   }
 
+  // Called by the fuel cost text field and invalid input counts as 0
   void onChangedFuelCost(String value) {
     setState(() {
       fuelCost = double.tryParse(value) ?? 0.0;
     });
   }
 
+  // Split fuel costs evenly between travellers
   double calculateTotalFuelCost() {
     return (fuelCost + fuelCost * _giftPercentage) / numTravellers;
   }
@@ -82,6 +89,7 @@ class _FgiftState extends State<Fgift> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+          // Top orange section of the page
           Container(
             padding: const EdgeInsets.all(18.0),
             decoration: BoxDecoration(
@@ -99,6 +107,7 @@ class _FgiftState extends State<Fgift> {
               ],
             ),
           ),
+          // total fuel cost input, travellers input and tip percentage slider
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Container(
@@ -110,8 +119,9 @@ class _FgiftState extends State<Fgift> {
                 padding: const EdgeInsets.all(18.0),
                 child: Column(
                   children: [
+                    // Fuel cost input
                     EnterFuelCost(onEntered: onChangedFuelCost),
-                    //Split Bill area
+                    // Split Bill area
                     TravellerCounter(
                       style: style,
                       numTravellers: numTravellers,
@@ -122,9 +132,11 @@ class _FgiftState extends State<Fgift> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text('Tip', style: theme.textTheme.titleMedium),
-                        Text(
-                          (fuelCost * _giftPercentage).toStringAsFixed(2),
-                          style: theme.textTheme.titleMedium,
+                        // Tip amount in money
+                        TipAmountDisplay(
+                          fuelCost: fuelCost,
+                          giftPercentage: _giftPercentage,
+                          theme: theme,
                         ),
                       ],
                     ),

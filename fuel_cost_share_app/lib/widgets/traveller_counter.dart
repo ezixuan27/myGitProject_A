@@ -6,7 +6,7 @@ class TravellerCounter extends StatelessWidget {
     required this.style,
     required this.numTravellers,
     required this.onDecrement,
-    required this.onIncrement
+    required this.onIncrement,
   });
 
   final TextStyle style;
@@ -28,15 +28,9 @@ class TravellerCounter extends StatelessWidget {
         ),
         Row(
           children: [
-            IconButton(
-              onPressed: onDecrement,
-              icon: const Icon(Icons.remove),
-            ),
+            IconButton(onPressed: onDecrement, icon: const Icon(Icons.remove)),
             Text('$numTravellers'),
-            IconButton(
-              onPressed: onIncrement,
-              icon: const Icon(Icons.add),
-            ),
+            IconButton(onPressed: onIncrement, icon: const Icon(Icons.add)),
           ],
         ),
       ],
